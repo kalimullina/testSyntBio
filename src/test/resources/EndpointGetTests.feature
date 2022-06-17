@@ -23,6 +23,3 @@ Feature: Checking the work of endpoint which check status of running task
     And Send GET request using jobId from previous response
     Then The status code is 200
     #And The jobStatus is ERROR
-
-
-

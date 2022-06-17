@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 public class ActionSteps extends AbstractStep {
 
     @When("Create a task to process entity with the correct entity id {string}")
-    @When("Create a task to process entity with the incorrect entity id {string}")
     public void createTaskWithEntityId(String correctEntityId) {
 
         response = given(requestSpecification)
@@ -47,5 +46,4 @@ public class ActionSteps extends AbstractStep {
                 .pathParam("jobId", jobId)
                 .when().get("/job/{jobId}");
     }
-
 }
