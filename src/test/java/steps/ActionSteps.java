@@ -1,5 +1,7 @@
 package steps;
 
+import dto.ScheduleJobRequestDto;
+import dto.ScheduleJobResponseDto;
 import io.cucumber.java.en.When;
 
 import java.util.Objects;
@@ -10,9 +12,10 @@ public class ActionSteps extends AbstractStep {
 
     @When("Create a task to process entity with the correct entity id {string}")
     public void createTaskWithEntityId(String correctEntityId) {
-
+        ScheduleJobRequestDto scheduleJobRequestDto = new ScheduleJobRequestDto(correctEntityId);
         response = given(requestSpecification)
-                .body("id : " + correctEntityId)
+                .contentType("application/json")
+                .body(scheduleJobRequestDto)
                 .when()
                 .post("/scheduleJob");
     }
@@ -22,15 +25,17 @@ public class ActionSteps extends AbstractStep {
         if (Objects.equals(incorrectEntityId, "null"))
             incorrectEntityId = "";
 
+        ScheduleJobRequestDto scheduleJobRequestDto = new ScheduleJobRequestDto(incorrectEntityId);
         response = given(requestSpecification)
-                .body("id : " + incorrectEntityId)
+                .contentType("application/json")
+                .body(scheduleJobRequestDto)
                 .when()
                 .post("/scheduleJob");
     }
 
     @When("Send GET request using jobId from previous response")
     public void sendGetRequestToCheckCreatedTask() {
-        String jobId = response.then().extract().path("jobId");
+        String jobId = response.as(ScheduleJobResponseDto.class).getJobId();
 
         response = given(requestSpecification)
                 .pathParam("jobId", jobId)
