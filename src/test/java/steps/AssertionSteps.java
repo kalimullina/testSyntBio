@@ -1,5 +1,5 @@
 package steps;
-
+s
 import io.cucumber.java.en.Then;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,10 +22,10 @@ public class AssertionSteps extends AbstractStep {
                 .isNotEmpty();
     }
 
-    @Then("The jobStatus should be IN_PROGRESS or SUCCESS")
+    @Then("The jobStatus is IN_PROGRESS")
     public void checkJobStatus() {
         String actualJobStatus = response.then().extract().path("jobStatus");
 
-
+        //Utils.waitFor(120, , 10, "Waiting time jobStatus expired");
     }
 }
