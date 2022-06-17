@@ -9,7 +9,8 @@ import static io.restassured.RestAssured.given;
 public class ActionSteps extends AbstractStep {
 
     @When("Create a task to process entity with the correct entity id {string}")
-    public void createTaskWithCorrectEntityId(String correctEntityId) {
+    @When("Create a task to process entity with the incorrect entity id {string}")
+    public void createTaskWithEntityId(String correctEntityId) {
 
         response = given(requestSpecification)
                 .body("id : " + correctEntityId)
@@ -28,7 +29,7 @@ public class ActionSteps extends AbstractStep {
                 .post("/scheduleJob");
     }
 
-    @When("Send the GET request using jobId from previous response")
+    @When("Send GET request using jobId from previous response")
     public void sendGetRequestToCheckCreatedTask() {
         String jobId = response.then().extract().path("jobId");
 
@@ -36,4 +37,15 @@ public class ActionSteps extends AbstractStep {
                 .pathParam("jobId", jobId)
                 .when().get("/job/{jobId}");
     }
+
+    @When("^Send GET request with the incorrect jobId \"([^\"]*)\"$")
+    public void sendGetRequest(String jobId) {
+        if (Objects.equals(jobId, "null"))
+            jobId = "";
+
+        response = given(requestSpecification)
+                .pathParam("jobId", jobId)
+                .when().get("/job/{jobId}");
+    }
+
 }

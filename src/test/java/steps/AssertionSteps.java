@@ -10,7 +10,7 @@ public class AssertionSteps extends AbstractStep {
     @Then("The status code is {int}")
     public void checkStatusCode(int expectedStatusCode) {
         assertThat(response.getStatusCode())
-                .as("Wrong status code in POST endpoint")
+                .as("Wrong status code")
                 .isEqualTo(expectedStatusCode);
     }
 
@@ -18,7 +18,7 @@ public class AssertionSteps extends AbstractStep {
     public void checkJobIdEmptiness() {
         String actualJobId = response.then().extract().path("jobId");
         assertThat(actualJobId)
-                .as("Wrong status code in POST endpoint")
+                .as("jobId is empty string")
                 .isNotEmpty();
     }
 
