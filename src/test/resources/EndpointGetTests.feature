@@ -6,7 +6,7 @@ Feature: Checking the work of endpoint which check status of running task
     And Send GET request using jobId from previous response
     Then The status code is 200
     And The jobStatus is IN_PROGRESS
-    And After 2 minutes jobStatus is SUCCESS
+    And After several minutes jobStatus is SUCCESS
 
 
   Scenario Outline: Send GET request with the incorrect jobId
@@ -23,4 +23,5 @@ Feature: Checking the work of endpoint which check status of running task
     When Create a task to process entity with the incorrect entity id "10000"
     And Send GET request using jobId from previous response
     Then The status code is 200
-    And The jobStatus is ERROR
+    And The jobStatus is IN_PROGRESS
+    And After several minutes jobStatus is ERROR
