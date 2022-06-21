@@ -2,7 +2,6 @@ package steps;
 
 import dto.GetJobStatusResponseDto;
 import dto.ScheduleJobResponseDto;
-import entities.JobStatus;
 import io.cucumber.java.en.Then;
 
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class AssertionSteps extends AbstractStep {
     public void checkJobStatusSuccess() throws Exception {
         String actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
 
-        Callable<Boolean> action = () -> Objects.equals(actualJobStatus, SUCCESS.toString());
+        Callable<Boolean> action = () -> SUCCESS.toString().equalsIgnoreCase(actualJobStatus);
 
         Utils.waitFor(120, action, 10, "Waiting time SUCCESS jobStatus expired");
     }
@@ -52,7 +51,7 @@ public class AssertionSteps extends AbstractStep {
     public void checkJobStatusError() {
         String actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
 
-        Callable<Boolean> action = () -> Objects.equals(actualJobStatus, ERROR.toString());
+        Callable<Boolean> action = () -> ERROR.toString().equalsIgnoreCase(actualJobStatus);
 
         Utils.waitFor(120, action, 10, "Waiting time ERROR jobStatus expired");
     }
