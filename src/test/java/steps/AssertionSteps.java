@@ -4,12 +4,12 @@ import dto.GetJobStatusResponseDto;
 import dto.ScheduleJobResponseDto;
 import io.cucumber.java.en.Then;
 
-import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static entities.JobStatus.ERROR;
 import static entities.JobStatus.IN_PROGRESS;
 import static entities.JobStatus.SUCCESS;
+import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssertionSteps extends AbstractStep {
@@ -38,16 +38,23 @@ public class AssertionSteps extends AbstractStep {
                 .isEqualTo(IN_PROGRESS.toString());
     }
 
-    @Then("After several minutes jobStatus is SUCCESS")
+    @Then("After several seconds jobStatus is SUCCESS")
     public void checkJobStatusSuccess() throws Exception {
-        String actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
+        //String actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
 
-        Callable<Boolean> action = () -> SUCCESS.toString().equalsIgnoreCase(actualJobStatus);
+        Callable<Boolean> action = () -> {
+            response = given(requestSpecification)
+                    .pathParam("jobId", jobId)
+                    .when().get("/job/{jobId}");
+            //actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
+
+            return SUCCESS.toString().equalsIgnoreCase(response.as(GetJobStatusResponseDto.class).getJobStatus());
+        };
 
         Utils.waitFor(120, action, 10, "Waiting time SUCCESS jobStatus expired");
     }
 
-    @Then("After several minutes jobStatus is ERROR")
+    @Then("After several seconds jobStatus is ERROR")
     public void checkJobStatusError() {
         String actualJobStatus = response.as(GetJobStatusResponseDto.class).getJobStatus();
 

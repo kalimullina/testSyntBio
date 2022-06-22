@@ -7,6 +7,7 @@ import io.restassured.specification.RequestSpecification;
 public abstract class AbstractStep {
 
     protected static Response response;
+    protected static String jobId;
     protected RequestSpecification requestSpecification;
 
     public AbstractStep() {

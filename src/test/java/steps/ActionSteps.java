@@ -35,7 +35,7 @@ public class ActionSteps extends AbstractStep {
 
     @When("Send GET request using jobId from previous response")
     public void sendGetRequestToCheckCreatedTask() {
-        String jobId = response.as(ScheduleJobResponseDto.class).getJobId();
+        jobId = response.as(ScheduleJobResponseDto.class).getJobId();
 
         response = given(requestSpecification)
                 .pathParam("jobId", jobId)
